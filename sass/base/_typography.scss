@@ -1,0 +1,97 @@
+body {
+    font-family: "Lato", sans-serif;
+    /* All child elements will get the same font family because they'll inherit css properties from their parents as font props get inherited*/
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.7;
+    /* means it's 1.7 times bigger than the pre-defined line height */
+    color: $color-grey-dark;
+
+}
+
+
+.heading-primary {
+    color: $color-white;
+    text-transform: uppercase;
+    backface-visibility: hidden;
+    /* this determines if the back part of an element is visible or hidden. We used this to avoid the shakiness that's sometimes caused by the animations */
+    margin-bottom: 6rem;
+
+    &--main {
+        /* span elements are inline by default, so block is used when we want a single element on a line */
+        display: block;
+        font-size: 6rem;
+        font-weight: 400;
+        /* by default, h1 has a higher font weight than 400 */
+        letter-spacing: 3.5rem;
+        animation-name: moveInFromLeft;
+        animation-duration: 1.2s;
+        animation-timing-function: ease-out;
+        /* with ease-in, anim will start slower and will accelerate over time*/
+        /* with ease out, anim will start faster and then it'll become slower */
+
+        /* 
+      animation-delay: 3s; 
+      animation-iteration-count: 3; //animation will happen 3 times!!!
+      
+      */
+
+        @include respond(phone) {
+            letter-spacing: 1rem;
+            font-size: 5rem;
+        }
+    }
+
+    &--sub {
+        display: block;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: 1.74rem;
+        animation: moveInFromRight 1.2s ease-out;
+
+        /* instead of specifying all props one by one, we can use this animation shorthand to specify all the props at once */
+        @include respond(phone) {
+            letter-spacing: .5rem;
+        }
+    }
+}
+
+.heading-secondary {
+    font-size: 3.5rem;
+    text-transform: uppercase;
+    font-weight: 700;
+    background-image: linear-gradient(to right, $color-primary-light, $color-primary-dark);
+    display: inline-block; //to restrict the gradient's/background image's width to the text
+    -webkit-background-clip: text; //it'll clip the linear gradient to where the text is
+    color: transparent; //this is done to show the clipped gradient behind the text
+    letter-spacing: .2rem;
+    transition: all .2s;
+
+    &:hover {
+        transform: skewY(2deg) skewX(15deg) scale(1.1);
+        text-shadow: .5rem 1rem 2rem rgba($color-black, .2); // x direction y direction blur size color
+    }
+
+    @include respond(tab-port) {
+        font-size: 3rem;
+    }
+
+    @include respond(phone) {
+        font-size: 2.5rem;
+    }
+}
+
+.heading-tertiary {
+    font-size: $default-font-size;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.paragraph {
+    font-size: $default-font-size;
+
+    //if there's a list of elements remember to use not last child to avoid margin in the last one
+    &:not(:last-child) {
+        margin-bottom: 3rem;
+    }
+}

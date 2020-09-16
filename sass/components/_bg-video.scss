@@ -1,0 +1,21 @@
+.bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -1; //so that the background image is below everything else
+    opacity: 0.23;
+    overflow: hidden;
+
+    &__content {
+        height: 100%;
+        width: 100%;
+        object-fit: cover; //similar to background-size: cover on images
+        //it basically allows the video to fill the entire parent while still maintaining the aspect ratio AND the part of the video that doesn't fit the parent will be clipped off
+        //object-fit can also be used with images. eg. we can have 1 img inside 1 parent element and then we can use this prop to make the img cover the element
+
+        //object-fit: fill does similar stuff, but it doesn't preserve the aspect ratio
+        //object-fit: contain - tries to fit its parent element without clipping the video
+    }
+}

@@ -1,0 +1,123 @@
+.btn {
+
+    /* link is a pseudo class, a.k.a a special state of a selector(anchor element)*/
+    /* visited is when the user has already clicked the button before, and he sees it again*/
+    /* we put both the link and the visited together since we don't want different behaviour on visited (default is it gets purple once the user has 'visited' the link*/
+    &,
+    &:link,
+    &:visited {
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 1.5rem 4rem;
+        display: inline-block;
+        /* we should always change inline elements to inline-block if we want to give some height/padding to the element*/
+        border-radius: 10rem;
+        transition: all 0.2s ease-in;
+        position: relative;
+        /* this is done to set this as a reference for the after pseudo element */
+        font-size: $default-font-size;
+
+        //Change for the <button> element
+        border: none;
+        cursor: pointer;
+    }
+
+    &:hover {
+        transform: translateY(-0.3rem);
+        box-shadow: 0 1rem 2rem rgba($color-black, 0.35);
+        /* box shadow takes : x-axis y-axis blur color; as its params
+    the higher the blur, the farther the shadow seems*/
+        //we can mention a hexadecimal or a variable in rgba() only in scss
+
+        /* when we hover over the btn, do something to affect the after pseudoelement */
+        &::after {
+            transform: scaleX(1.4) scaleY(1.6);
+            /* element will appear as 1.5x of its original size */
+            opacity: 0;
+            /* this is done so that it fades out in 0.4s*/
+        }
+    }
+
+    /*active psuedo class is used for when we click the element*/
+    &:active,
+    &:focus {
+        outline: none; //ONLY FOR THE BUTTON
+        transform: translateY(-0.1rem);
+        /* this -1px is with respect to the initial position that exists in the :link pseudoclass*/
+        box-shadow: 0 0.3rem 0.8rem rgba($color-black, 0.35);
+    }
+
+    &--white {
+        background-color: $color-white;
+        color: $color-grey-dark;
+
+        &::after {
+            background-color: white;
+        }
+
+    }
+
+    &--green {
+        background-color: $color-primary;
+        color: $color-white;
+
+        &::after {
+            background-color: $color-primary;
+        }
+
+    }
+
+    /* after pseudo element can be used after something*/
+    &::after {
+        content: "";
+        /* content is also imp, but we can set it to empty*/
+        display: inline-block;
+        /* display needs to be the same as the the one we're using for element we need, the btn in this case */
+        height: 100%;
+        /* pseudo element after is basically treated as a CHILD of the button, so if we say 100% height, that's 100% of the height of the button */
+        width: 100%;
+        border-radius: 10rem;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        /* -1 to set it behind the button */
+        transition: all 0.4s;
+    }
+
+
+
+
+    &--animated {
+        animation: moveInFromBottom 1s ease-out 0.75s;
+        animation-fill-mode: backwards;
+        /* this will automatically apply the effects specified in the 0% keyframe even before the animation starts. So if the animation is delayed, this can be used to keep the initial property set until the animation begins */
+    }
+}
+
+
+.btn-text {
+
+    &:link,
+    &:visited {
+        font-size: $default-font-size;
+        color: $color-primary;
+        display: inline-block; //so that we can use padding margin in vertical direcs as well
+        text-decoration: none;
+        border-bottom: 1px solid $color-primary;
+        padding: 3px; //we add our own border bottom since we can then also add a padding in between
+        transition: all .2s;
+    }
+
+    &:hover {
+        background-color: $color-primary;
+        color: $color-white;
+        box-shadow: 0 1rem 2rem rgba($color-black, .15);
+        transform: translateY(-2px);
+    }
+
+    &:active {
+        box-shadow: 0 .5rem 1rem rgba($color-black, .15);
+        transform: translateY(0px);
+    }
+}

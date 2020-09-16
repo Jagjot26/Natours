@@ -1,0 +1,52 @@
+/* universal selector to ensure all browsers render the page in the same way. 
+The '*' only includes all the real elements. To include pseudo elements like ::after, we need to mention them explicitly*/
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+    /* box-sizing property is not inherited by default. But using the 'inherit' above, we can force inheritance of this property everywhere under body since we set it to border box in the body selector */
+}
+
+html {
+    font-size: 62.5%;
+    /* we want to set root font size as 10px so that we can use rem everywhere and calculate px values easily as 1 rem will then be 1*10 = 10px, since rems use root font size to compute values. 
+    But, if we set root font size in px, the user won't be able to change it in his browser if he finds it too small as the value is fixed. Hence, we need to set it as a percentage of the default browser font size. Since the def font size of browser is 16px and we want 10px, we can set font size to 62.5% as 62.5% of 16 = 10 */
+
+
+    @include respond(tab-land) {
+        //width <= 1200px 
+        font-size: 56.25%; // say we want 1rem = 9px. 9/16 = 56.25%
+    }
+
+    @include respond(tab-port) {
+        //width <= 900px
+        font-size: 50%; //say we want 1rem = 8px here. So, 8/16 = 50% or 50% of 16 = 8. 
+    }
+
+    //this tab-port HAS TO come after tab-land because smaller @media should always come after the bigger ones as its always the last @media that's chosen in conflicting case.
+    //eg. a width of 800px would come under max-width: 900 and max-width: 1200, but the one at the end will be chosen. 
+
+    //between tab-land and big-desktop, i.e. 1200px - 1800px, default font size (62.5%) will apply
+
+    @include respond(big-desktop) {
+        //width >= 1800px
+        font-size: 75%; //1rem = 12, 12/16 = 75%
+    }
+}
+
+body {
+    box-sizing: border-box;
+    padding: 3rem;
+    /* adds a padding to the entire page*/
+
+    @include respond(tab-port) {
+        padding: 0;
+    }
+}
+
+::selection {
+    background-color: $color-primary;
+    color: $color-white;
+}

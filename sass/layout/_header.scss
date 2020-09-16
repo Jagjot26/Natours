@@ -1,0 +1,78 @@
+.header {
+    height: 85vh;
+
+    /* at all times, height of the element will be 95% of the viewport height */
+    background-image: linear-gradient(to right bottom,
+            rgba($color-primary-light, 0.801),
+            rgba($color-primary-dark, 0.801)),
+        url(../img/hero-small.jpg);
+    /* top image will be linear gradient(from top left to right bottom), bottom image will be hero.jpg*/
+    /* We can also just specify to left, or to right*/
+    /* we can change opacity with the help of highlight color picker ext.(already installed) by just hovering over a hex code and adjusting the slider on the left*/
+    background-size: cover;
+    /* this will always try to display the full or center of element even in smaller screens*/
+    background-position: top;
+    /* this will ensure that as we reduce the viewport height, the top will always remain visible while the bottom part might get cropped */
+
+    /* clip path can be used to clip an element. Each argument represents a coordinate(x,y) and its distance is taken from origin. 100% shows 100% of available space in specified axis*/
+    position: relative;
+
+
+    @supports (clip-path: polygon(0 0)) or (-webkit-clip-path: polygon(0 0)) {
+        -webkit-clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 75vh, 0 100%);
+        height: 95vh;
+    }
+
+
+    //media query for high res displays, i.e. displays with dpi >= 192 and screen width >= 600px
+    // ',' means an OR, i.e. apply this media query when (before the ',') condition is true OR (after the ',') condition is true
+    //600px / 16 = 37.5em 
+    //2000px / 16 = 125em.
+    //NOTE: Media queries should always be in em bcz px and rem can be inconsistent
+    //min-resolution doesn't work on safari, hence we use -webkit prop below here
+    @media only screen and (min-resolution: 192dpi) and (min-width: 37.5em),
+    only screen and (-webkit-min-device-pixel-ratio: 2) and (min-width: 37.5em),
+    only screen and (min-width: 125em) {
+        background-image: linear-gradient(to right bottom,
+                rgba($color-primary-light, 0.801),
+                rgba($color-primary-dark, 0.801)),
+            url(../img/hero.jpg);
+    }
+
+    @include respond(phone) {
+        -webkit-clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 85vh, 0 100%);
+    }
+
+    //   below is basically .header__logo-box
+    &__logo-box {
+        /* when we use absolute positioning, we need to set its PARENT element to relative positioning to set that as the reference point. If we don't, it'll fall back to the parent element that has relative/fixed/sticky/absolute positioning until it goes back all the way over to the <html> tag*/
+        position: absolute;
+        left: 4rem;
+        top: 4rem;
+        /* Relative positioning is basically static(default) positioning but we can specify top, left, bottom and right and it'll adjust relative to its static(default) positioning */
+        /* In Fixed positioning, we can specify top, left, right, bottom, but it's always taken from the origin(or 0,0 of the html document) and the elements set to fixed stay there even when we scroll. Fixed has nothing to do with parents! */
+    }
+
+    &__logo {
+        height: 3.5rem;
+        /* if we just set the height, width will be automatically figured out */
+    }
+
+    &__text-box {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        /* TOP and LEFT are with respect to the parent since the parent is set to relative. If the parent was not set to relative, it'd have been with respect to last parent set to relative/sticky/fixed/absolute. Otherwise, it'll fallback to the <html> tag, i.e. origin*/
+        transform: translate(-50%, -50%);
+        /* transform is with respect to the element. So -50% in x-axis = move element left by 50% of its width and -50% in y-axis = raise the element up by 50% of its height */
+        text-align: center;
+        /* works on elements treated as text, which inlcudes inline and inline-block elements. So, our white btn will be aligned to center now!!*/
+    }
+}
+
+/* set the outer div to hover and the assign property to the inner element if you want the animation to play when the user hovers over the logo*/
+.header__logo-box:hover .header__logo {
+    animation: moveInFromRight 1.2s ease-out;
+}

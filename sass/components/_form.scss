@@ -1,0 +1,110 @@
+.form {
+    &__group:not(:last-child) {
+        margin-bottom: 2rem;
+    }
+
+    &__input {
+        font-size: 1.5rem;
+        font-family: inherit;
+        color: inherit; //font color is not inherited by default
+        padding: 1.5rem 2rem;
+        border-radius: 2px;
+        background-color: rgba($color-white, .5);
+        border: none;
+        border-bottom: 3px solid transparent; //this is done so that the input element below the first element doesn't move down when the first one is focused bcz of 3px gap
+        width: 90%;
+        display: block;
+        transition: all .3s;
+
+        @include respond(tab-port) {
+            width: 100%;
+        }
+
+        &:focus {
+            outline: none; //when it's focused or clicked, no outline will be visible
+            box-shadow: 0 1rem 2rem rgba($color-black, .1);
+            border-bottom: 3px solid $color-primary;
+        }
+
+        &:focus:invalid {
+            border-bottom: 3px solid $color-secondary-dark; //validation check based on type of input and color change
+        }
+
+        &::-webkit-input-placeholder {
+            color: $color-grey-dark-2;
+        }
+    }
+
+
+
+    &__label {
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-left: 2rem; //to align it with the input text
+        margin-top: .7rem;
+        display: block;
+        transition: all .3s;
+    }
+
+    // + is the adjacent sibling selector, i.e. siblings should be right next to one another. Also, the element selected with selector, i.e. the one AFTER the '+' needs to be AFTER the specified sibling in the HTML as well.
+    // ~ is the general sibling selector, i.e. siblings don't need to be adjacent to one another
+    &__input:placeholder-shown+&__label {
+        opacity: 0;
+        visibility: hidden; //with opacity 0, element will still be on the page, just invisible
+        //we CAN'T JUST USE visibility:hidden WITHOUT opacity:0 bcz we can't animate visibility
+        transform: translateY(-4rem);
+    }
+
+
+    &__radio-group {
+        width: 49%;
+        display: inline-block;
+
+        @include respond(tab-port) {
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+    }
+
+    &__radio-input {
+        display: none;
+    }
+
+    &__radio-label {
+        font-size: $default-font-size;
+        cursor: pointer;
+        position: relative;
+        padding-left: 4.5rem;
+    }
+
+    &__radio-button {
+        height: 3rem;
+        width: 3rem;
+        border: 5px solid $color-primary;
+        border-radius: 50%;
+        display: inline-block;
+        position: absolute;
+        left: 0;
+        top: -.4rem;
+
+        &::after {
+            content: ""; //whenever we use a pseudo element, we need to set the content prop to ""
+            display: block; //also need to set the display to block
+            height: 1.3rem;
+            width: 1.3rem;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: $color-primary;
+            opacity: 0;
+            transition: opacity .2s;
+        }
+    }
+
+    //here, we need to select after pseudo element of __radio-button. Since it's not a sibling or child of __radio-input, we need to use '~' to first get access of a sibling i.e. __radio-label and then we can get to its child's pseudo element which is __radio-button::after
+    &__radio-input:checked~&__radio-label &__radio-button::after {
+        opacity: 1;
+    }
+}

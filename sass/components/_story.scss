@@ -1,0 +1,92 @@
+.story {
+    width: 75%;
+    margin: 0 auto; //for centering
+    box-shadow: 0 3rem 6rem rgba($color-black, .1);
+    background-color: rgba($color-white, .6);
+    border-radius: 3px;
+    padding: 6rem;
+    padding-left: 9rem; //this is done to compensate for the left overflow caused by the translateX below
+    font-size: $default-font-size; //p tag will automatically inherit this
+    transform: skewX(-12deg);
+
+
+    // &>* {
+    //     transform: skewX(12deg); //this doesn't work with &__shape bcz we already have a transfrom going in that class, which takes precedence over this
+    // }
+
+    @include respond(tab-port) {
+        width: 100%;
+        padding: 4rem;
+        padding-left: 7rem;
+    }
+
+    @include respond(phone) {
+        transform: skewX(0);
+    }
+
+
+    &__shape {
+        width: 15rem;
+        height: 15rem;
+        float: left; //we want it to be out of regular flow and sit on the left side and also to make the rest of the content float around it
+        transform: translateX(-3rem) skewX(12deg); //best way to move floated elements by some px is to use transform
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+
+        @supports (clip-path: polygon(0 0)) or (-webkit-clip-path: polygon(0 0)) {
+            border-radius: none;
+            -webkit-clip-path: circle(50% at 50% 50%);
+            clip-path: circle(50% at 50% 50%); //for getting the shape to be a circle
+            -webkit-shape-outside: circle(50% at 50% 50%);
+            shape-outside: circle(50% at 50% 50%); //first number is the radius - 50% means half the height/width of the element, i.e. 7.5rem here
+            //'at' is center positioning, 50% 50% means center is at half of width in x direction and half of width in y direction
+            //shape-outside is how the text/other stuff around it will acknowledge its shape
+            //element HAS TO BE floated and should have dimensions for shape outside to work
+        }
+
+        @include respond(phone) {
+            transform: translateX(-3rem) skewX(0);
+        }
+    }
+
+    &__img {
+        height: 100%; //img in inside of __shape so it'll take up height of __shape, i.e. 15rem
+        transform: translateX(-4rem) scale(1.2);
+        backface-visibility: hidden; //to prevent weird stuff from transform animation
+        transition: all .5s;
+    }
+
+    &__text {
+        transform: skewX(12deg);
+
+        @include respond(phone) {
+            transform: translateX(-3rem) skewX(0);
+        }
+
+    }
+
+    &__caption {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 20%);
+        color: $color-white;
+        text-transform: uppercase;
+        font-size: 1.7rem;
+        text-align: center;
+        opacity: 0;
+        transition: all .5s;
+        backface-visibility: hidden;
+    }
+
+    &:hover &__caption {
+        opacity: 1;
+        transform: translate(-50%, -50%); //to prevent any weird stuff from transform, use backface visibility hidden
+    }
+
+    &:hover &__img {
+        transform: translateX(-4rem) scale(1);
+        filter: blur(2px) brightness(80%); //used for applying filters to imgs
+    }
+}

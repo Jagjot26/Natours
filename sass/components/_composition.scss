@@ -1,0 +1,68 @@
+//this is for the three photos with green boundary
+.composition {
+    position: relative;
+
+    &__photo {
+        width: 55%; //width of images should ALWAYS be defined in % for responsive design
+        box-shadow: 0 1.5rem 4rem rgba($color-black, .4);
+        border-radius: 2px;
+        position: absolute; //0,0 will be on the top left of composition element since that's the reference
+        transition: all .1s;
+        z-index: 10; //setup for overlapping images
+        outline-offset: 2rem; //gap between image and border. Padding doesn't work as we also want it to scale up here.
+        // padding: 2rem;
+
+        @include respond(tab-port) {
+            float: left;
+            position: relative; //for the float to work as we have absolute position and we need to get rid of that
+            width: 33.3333333%;
+            box-shadow: 0 1.5rem 3rem rgba($color-black, .2);
+        }
+
+
+        &--p1 {
+            left: 0;
+            top: -2rem;
+
+            @include respond(tab-port) {
+                top: 0;
+                transform: scale(1.15);
+            }
+        }
+
+        &--p2 {
+            right: 0;
+            top: 2rem;
+
+            @include respond(tab-port) {
+                top: -1rem;
+                transform: scale(1.3);
+                z-index: 100;
+            }
+        }
+
+        &--p3 {
+            left: 20%;
+            top: 10rem;
+
+            @include respond(tab-port) {
+                top: 0;
+                left: 0;
+                transform: scale(1.15);
+            }
+        }
+
+
+        &:hover {
+            outline: 1.5rem solid $color-primary; //basically like border, but allows us to add offset
+            transform: scale(1.05) translateY(-.5rem);
+            box-shadow: 0 2.5rem 4rem rgba($color-black, .5);
+            z-index: 20;
+        }
+    }
+
+    //when we hover over composition element, this will select those photos that are not hovered over
+    &:hover &__photo:not(:hover) {
+        transform: scale(0.95);
+    }
+}
